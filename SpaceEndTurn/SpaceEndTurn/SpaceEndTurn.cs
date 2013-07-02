@@ -21,26 +21,16 @@ namespace SpaceEndTurnMod
             return 1;
         }
 
-        private static void spacelog(string line)
-        {
-            System.IO.StreamWriter dbug = new System.IO.StreamWriter(new System.IO.FileStream("C:\\SpaceEndTurn\\log.txt",System.IO.FileMode.Append));
-            dbug.WriteLine(string.Concat(System.DateTime.Now.ToShortDateString(), " ", System.DateTime.Now.ToLongTimeString(), " ", line));
-            dbug.Close();
-            dbug.Dispose();
-        }
-
         public static MethodDefinition[] GetHooks(TypeDefinitionCollection scrollsTypes, int version)
         {
             try
             {
                 return new MethodDefinition[] {
-					scrollsTypes["BattleMode"].Methods.GetMethod("handleInput")[0],
-                    scrollsTypes["BattleMode"].Methods.GetMethod("Start")[0]
+					scrollsTypes["BattleMode"].Methods.GetMethod("handleInput")[0]
 				};
             }
             catch
             {
-                spacelog("Caught an error in MethodDefinition");
                 return new MethodDefinition[] { };
             }
         }
@@ -63,23 +53,12 @@ namespace SpaceEndTurnMod
                     }
                     catch (Exception e)
                     {
-                        spacelog(string.Concat("Caught an error in AfterInvoke:"));
-                        spacelog(e.ToString());
                     }
                 }
-            }
-            if (info.targetMethod == "Start")
-            {
-                /*spacelog("reached start hook");
-                List<ICommListener> commlist;
-                commlist = (List<ICommListener>)typeof(Communicator).GetField("callBackTargets", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(App.Communicator);
-                fbmode = (BattleMode)commlist[commlist.Count - 1];
-                spacelog("found battlemode");*/
             }
             return;
         }
 
-        private BattleMode fbmode;
         private void endTurn(BattleMode bmode)
         {
             //throw new Exception();
