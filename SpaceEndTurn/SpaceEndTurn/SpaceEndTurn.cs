@@ -42,19 +42,23 @@ namespace SpaceEndTurnMod
         }
         public override void AfterInvoke(InvocationInfo info, ref object returnValue)
         {
-            if (info.targetMethod == "handleInput")
+            try
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (info.targetMethod == "handleInput")
                 {
-                    try
+                    bool chatopen = (bool)typeof(BattleMode).GetField("showChatInput", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(info.target);
+                    if (!chatopen)
                     {
-
-                        endTurn((BattleMode)info.target);
-                    }
-                    catch (Exception e)
-                    {
+                        if (Input.GetKeyDown(KeyCode.Space))
+                        {
+                            endTurn((BattleMode)info.target);
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+
             }
             return;
         }
