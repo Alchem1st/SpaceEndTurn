@@ -35,10 +35,9 @@ namespace SpaceEndTurnMod
             }
         }
 
-        public override bool BeforeInvoke(InvocationInfo info, out object returnValue)
+        public override void BeforeInvoke(InvocationInfo info)
         {
-            returnValue = null;
-            return false;
+            return;
         }
         public override void AfterInvoke(InvocationInfo info, ref object returnValue)
         {
@@ -56,16 +55,12 @@ namespace SpaceEndTurnMod
                     }
                 }
             }
-            catch (Exception e)
-            {
-
-            }
+            catch { }
             return;
         }
 
         private void endTurn(BattleMode bmode)
         {
-            //throw new Exception();
             MethodInfo etmethod = typeof(BattleMode).GetMethod("endTurn", BindingFlags.Instance | BindingFlags.NonPublic);
             etmethod.Invoke(bmode, null);
         }
